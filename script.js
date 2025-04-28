@@ -11,11 +11,11 @@ var camera = document.getElementById("Level");
 var input = 0; //left:-1 , right:1:
 var gameStarted = false;
 
-var currentLevel
+var currentLevel;
 
 function init()
 {
-    currentLevel = new Level();
+    currentLevel = new Level(10);
     addInput();
     animate();
 }
@@ -66,6 +66,46 @@ function addInput()
     });
 }
 
+//AI
+function nextGeneration()
+{
+    for (let i = 0; i < level.playerCount; i++) {
+        if (i == best) { players[i].reset({ x: 768 / 2 - 100 + Math.random() * 200, y: 0 }, players[i].brain); continue; }
+        //HAS REACHED TOP -> NO NEED FOR NEW BRAIN
+        if (players[i].topPosition < levelLimit) {
+            var newBrain = players[i].brain;
+        }
+        else {
+            var newBrain = players[best].brain.copy();
+            if (highScore >= lastHighscore) {
+                if (players[i].topPosition > avg) {
+                    newBrain.mutate(0.5);
+                    console.log("mutate")
+                }
+                else {
+                    newBrain.mutate(0.1);
+                }
+            }
+        }
+
+        // newBrain.mutate(Math.min(1-(players[i].topPosition/highScore),0.4))
+        players[i].reset({ x: 768 / 2 - 100 + Math.random() * 200, y: 0 }, newBrain)
+    }
+}
+
+function calculateFitness() {
+    let sum = 0;
+    for (let player of players) {
+        sum += player.topPosition;
+    }
+    for (let player of players) {
+        player.fitness = player.topPosition / sum;
+    }
+
+    return sum / players.length;
+}
+///
+
 function render(time)
 {
     dt = (time-lastTick)*.06;
@@ -80,7 +120,7 @@ function render(time)
             document.getElementById("Input").style.visibility = "hidden";
         }
 
-        currentLevel.players[0].move(input);
+       //currentLevel.players[0].move(input);
     }
 
     currentLevel.update()

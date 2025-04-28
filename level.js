@@ -1,6 +1,6 @@
 class Level{
   
-    constructor() 
+    constructor(PlayerCount) 
     {
         this.highScoreLine = document.getElementById("highScoreLine");
         this.progress = document.getElementById("progress");
@@ -10,7 +10,7 @@ class Level{
         this.highScore = 0;
         this.score = 0;
         this.lastHighscore = 0;
-        this.playerCount = 1;
+        this.playerCount = PlayerCount;
         this.levelLimit = -5000;
         this.currentLevel = 1;
         this.gameStarted = false;
@@ -98,20 +98,20 @@ class Level{
             this.players[i].update();
 
             if (this.players[i].alive) {
+                
+                this.players[i].move(this.players[i].brain.think(this.players[i].position,(this.levelParts[this.players[i].getLevelPart()].getClosestSpike(this.players[i].position))));
+
                 //COLLISION
                 if (this.levelParts[this.players[i].getLevelPart()].checkCollision(this.players[i].position)) {
                     //CRASH
-                    document.getElementById("Black").style.visibility = "visible"
                     this.players[i].crash(camera.position);
-                    setTimeout(() => {
-                        this.restartLevel();
-                   }, 1000);
                 }
 
                 //TOP POSITION
                 if (this.players[i].topPosition <= topHeight) {
                     topHeight = this.players[i].topPosition;
                     camera.target = this.players[i];
+                    this.progress.style.backgroundColor = this.players[i].body.getAttribute("fill");
                 }
 
                 //LEVEL FINISHED
@@ -127,6 +127,14 @@ class Level{
             }
             else {
                 deadPlayers++;
+
+                if(deadPlayers == this.playerCount)
+                {
+                    document.getElementById("Black").style.visibility = "visible"
+                        setTimeout(() => {
+                            this.restartLevel();
+                       }, 1000);
+                }
             }
         }
         

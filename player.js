@@ -35,6 +35,7 @@ class Player{
         this.body.style.opacity = 1;
         this.moveEyes(0);
         this.body.style.visibility = "visible";
+        this.brain = new PlayerBrain()
     }
 
     crash(cameraPosition)

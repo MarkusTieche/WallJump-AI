@@ -2,15 +2,15 @@ class PlayerBrain {
 
     constructor()
     {
-        this.brain = new NeuralNetwork(4, 4, 2);
+        this.nn = new NeuralNetwork(4, 4, 2);
         this.thinkTime = 15;
         this.fitness = 0;
         this.inputs = [];
     }
 
-    updateBrain(Brain)
+    updateBrain(newBrain)
     {
-
+        this.nn = newBrain;
     }
 
     think(Position,ClosestSpike) {
@@ -25,7 +25,7 @@ class PlayerBrain {
             this.inputs[3] = ClosestSpike.y / -1280;  //NEXT SPIKE Y POSITION 
 
             //RETURN OUTPUT -> NEXT MOVE
-            var output = this.brain.predict(this.inputs);
+            var output = this.nn.predict(this.inputs);
             if (output[0] > output[1]) {
                 return(-1)
             }

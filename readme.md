@@ -1,4 +1,5 @@
 # WallJump AI
+# WIP
 
 AI plays WallJump. A vector based HTML5 game optimized for mobile.
 <a href="https://markustieche.github.io/WallJump/ " >link to Repository</a> 

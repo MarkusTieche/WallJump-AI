@@ -15,11 +15,12 @@ class Level{
         this.currentLevel = 1;
         this.gameStarted = false;
 
+        this.createLevel(Math.ceil((this.levelLimit * -1) / 1280));
+       
         for (let i = 0; i < this.playerCount; i++) {
             this.addPlayer({x:768/2,y:0},i,("#"+Math.floor(Math.random()*16777215).toString(16)));
         }
 
-        this.createLevel(Math.ceil((this.levelLimit * -1) / 1280));
 
         camera.target = this.players[0];
     }
@@ -55,6 +56,8 @@ class Level{
         this.gameStarted = false;
         document.getElementById("Input").style.visibility = "visible";
         document.getElementById("Black").style.visibility = "hidden";
+
+        playerAI.nextGeneration(this.players, camera.target.index);
 
         for (let i = 0; i < this.players.length; i++) {
             this.players[i].reset({ x: 768 / 2, y: 0 });

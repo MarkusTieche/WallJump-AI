@@ -13,6 +13,7 @@ class Player{
         this.eyes = this.body.getElementsByTagName('circle');
         this.eyesPosition = {"leftX":Number(this.eyes[0].getAttribute("cx")),"rightX":Number(this.eyes[1].getAttribute("cx"))};
         this.index = Index;
+        this.brain = new PlayerBrain();
         this.reset(Position);
     }
 
@@ -35,7 +36,6 @@ class Player{
         this.body.style.opacity = 1;
         this.moveEyes(0);
         this.body.style.visibility = "visible";
-        this.brain = new PlayerBrain()
     }
 
     crash(cameraPosition)
